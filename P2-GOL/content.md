@@ -1,36 +1,20 @@
 ---
-title: Game Of Life
-slug: game-of-life-2
+title: "Creating the Grid"
+slug: creating-the-grid
 ---
-
-#Code
-
-You may have noticed, by the way, that the Start and Update methods
-don’t have “private” or “public” in front of them. In C\#, if not
-specified, a method declared in a class like Play will be private, so
-Start and Update could also have been written like this:
-
-```
-private void Start() {
-
-}
-
-private void Update() {
-
-}
-```
 
 The first thing we’ll want to do is set up our grid.
 
-Right above the declaration of the Start method, declare the following
+>[action]
+>Right above the declaration of the Start method, declare the following
 private member variables:
-
-```
-private int numCols = 8;
-private int numRows = 5;
-private float cellSideLength = 1;
-private float margin = 0.5f;
-```
+>
+>```
+>private int numCols = 8;
+>private int numRows = 5;
+>private float cellSideLength = 1;
+>private float margin = 0.5f;
+>```
 
 “numCols” and “numRows” will be used to define how wide and tall our
 grid is, respectively. “cellSideLength” represents how long each side of
@@ -51,26 +35,28 @@ We’ve defined the values for these member variables inline, which is
 totally allowed in C\#! Variables that aren’t set explicitly default to
 0 or null.
 
-Next change the Start method to look like this:
-
-```
-void Start() {
-for (int col = 0; col < numCols; ++col) {
-  for (int row = 0; row < numRows; ++row) {
-      Cell cell = Utilities.GetNewCell();
-      float x = (col + 0.5f - numCols * 0.5f) * (cellSideLength + margin);
-      float y = (row + 0.5f - numRows * 0.5f) * (cellSideLength + margin);
-      cell.transform.localPosition = new Vector2(x,y);
-      }
-    }
-}
-```
+>[action]
+>Next change the Start method to look like this:
+>
+>```
+>void Start() {
+>for (int col = 0; col < numCols; ++col) {
+>  for (int row = 0; row < numRows; ++row) {
+>      Cell cell = Utilities.GetNewCell();
+>      float x = (col + 0.5f - numCols * 0.5f) * (cellSideLength + margin);
+>      float y = (row + 0.5f - numRows * 0.5f) * (cellSideLength + margin);
+>      cell.transform.localPosition = new Vector2(x,y);
+>      }
+>    }
+>}
+>```
 
 We’ll explain this code in a moment, but first, let’s see it in action.
 
 Save the component, and go back to Unity.
 
-Press the Play arrow at the **top** to run the Scene. You should see a
+>[action]
+>Press the Play arrow at the **top** to run the Scene. You should see a
 grid of cubes appear!
 
 ![](../media/image27.png)
@@ -117,3 +103,31 @@ the right by half of whatever it’s height and width is, so we write:
 float x = (col + 0.5f - numCols * 0.5f) * (cellSideLength + margin);
 float y = (row + 0.5f - numRows * 0.5f) * (cellSideLength + margin);
 ```
+
+What is Cell?
+
+>[action]
+>Navigate to and double-click MyComponents/Cell to open it in Visual
+Studio.
+
+![](../media/image29.png)
+
+When you do, you should see some code similar to Grid.
+
+![](../media/image04.png)
+
+In Grid, we set Cell’s position by setting cell.transform.localPosition.
+“transform” is a public property that Cell has inherited from
+MonoBehaviour, and localPosition is a property of that.
+
+We’ve positioned Cell by assigning its transform’s localPosition, which
+is a Vector, to a new Vector. The “new” keyword is the C\# way of saying
+that a new object is being instantiated.
+
+The function Utilites.GetNewCell(), by the way, is a method we’ve
+written to handle generating the Cube using a predefined Unity object,
+also known as a Prefab. We’ve written a few Utilities functions to
+handle some tasks that are Unity-specific and/or specific to how we’ve
+set up this project. You can treat these functions as a black-box for
+this tutorial, but if you are interested in peeking inside, Utilities is
+located in the Classes folder.
