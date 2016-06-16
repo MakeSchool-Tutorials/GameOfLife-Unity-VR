@@ -1,4 +1,4 @@
-﻿---
+---
 title: "Getting Set Up"
 slug: getting-set-up
 ---
