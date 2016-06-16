@@ -1,3 +1,8 @@
+---
+title: Game Of Life
+slug: game-of-life-5
+---
+
 #3D
 
 All the Ds. All of them.

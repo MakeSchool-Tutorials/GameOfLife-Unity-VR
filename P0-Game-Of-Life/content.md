@@ -1,3 +1,8 @@
+---
+title: Game Of Life
+slug: game-of-life-1
+---
+
 In this tutorial you are going to familiarize yourself with C\# by
 making both a 2D and 3D version of Conway's Game of Life in Unity. If
 you've never heard of Conway's Game of Life,

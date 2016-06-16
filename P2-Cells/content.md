@@ -1,3 +1,8 @@
+---
+title: Game Of Life
+slug: game-of-life-3
+---
+
 #Cells
 What is Cell?
 

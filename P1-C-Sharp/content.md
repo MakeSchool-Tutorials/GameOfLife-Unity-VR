@@ -1,3 +1,8 @@
+---
+title: Game Of Life
+slug: game-of-life-2
+---
+
 #Code
 
 You may have noticed, by the way, that the Start and Update methods

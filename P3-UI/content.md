@@ -1,3 +1,8 @@
+---
+title: Game Of Life
+slug: game-of-life-4
+---
+
 #UI
 We’ll start with the buttons along the bottom.
 
