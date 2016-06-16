@@ -11,8 +11,7 @@ a great article. Nearly every programmer has written a version of this
 game at some point in their careers and wasted lots of time staring at
 cool shapes morphing. Consider this your initiation :p
 
-TL;DR
-=====
+##TL;DR
 
 There is a grid of cells. A cell is either alive or dead. If a cell has
 less than two live neighbors, it dies. If it has more than three
