@@ -4,8 +4,17 @@ slug: getting-set-up
 ---
 
 >[action]
->Download and open the GOL Project in Unity. You should see some HUD
-floating over a nebulous space.
+>Open the Command Prompt application from your Start menu and type:
+>
+>cd Desktop
+>git clone git clone https://MakeSchool-Tutorials@bitbucket.org/MakeSchool-Tutorials/gameoflife-unity.git
+
+A folder should appear named "gameoflife-unity" should appear on your Desktop with a folder named "GOL" inside.
+
+>[action]
+> Open Unity, and open the project by choosing "Open," and then navigating to and selecting the folder "GOL."
+
+You should see some HUD floating over a nebulous space.
 
 ![](../media/image50.png)
 
