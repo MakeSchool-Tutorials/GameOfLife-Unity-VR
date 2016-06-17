@@ -19,30 +19,32 @@ The first thing we’ll want to do is set up our grid.
 
 The “f” at the end of “0.5” in margin’s declaration tells the compiler that this number is a float rather than a double; without that, C\# will treat 0.5 as a double, and get sad because it doesn’t implicitly cast doubles to floats. It does, however, implicitly cast ints to floats, as you can see in cellSideLength’s declaration. Why is this? Well, a float has more information than an int, but less information than a double, so C\# wants to make sure you really mean to lose that information.
 
-We’ve defined the values for these member variables inline, which is totally allowed in C\#! Variables that aren’t set explicitly default to 0 or null.
+We’ve defined the values for these member variables inline, which is totally allowed in C\#! Variables that aren’t set explicitly will default to 0 or null.
 
 >[action]
 >Next change the Start method to look like this:
 >
 >```
->void Start() {
->for (int col = 0; col < numCols; ++col) {
->  for (int row = 0; row < numRows; ++row) {
->      Cell cell = Utilities.GetNewCell();
->      float x = (col + 0.5f - numCols * 0.5f) * (cellSideLength + margin);
->      float y = (row + 0.5f - numRows * 0.5f) * (cellSideLength + margin);
->      cell.transform.localPosition = new Vector2(x,y);
->      }
->    }
->}
->```
+void Start() {
+>
+  for (int col = 0; col < numCols; ++col) {
+    for (int row = 0; row < numRows; ++row) {
+        Cell cell = Utilities.GetNewCell();
+        float x = (col + 0.5f - numCols * 0.5f) * (cellSideLength + margin);
+        float y = (row + 0.5f - numRows * 0.5f) * (cellSideLength + margin);
+        cell.transform.localPosition = new Vector2(x,y);
+    }
+  }
+>
+}
+```
 
 You may see what this code does already, but before we go over it, let’s see it in action.
 
 Save the component, and go back to Unity.
 
 >[action]
->Press the Play arrow at the **top** to run the Scene. You should see a
+>Press the Play arrow at the **top** (not the one in the Scene itself!) to run the Scene. You should see a
 grid of cubes appear!
 
 ![](../media/image27.png)
@@ -54,45 +56,47 @@ grid of cubes appear!
 
 As you’ve may have suspected, our code creates a cube for each cell in our grid, and positions each one based on the row and column.
 
-To explain the positioning math a little, we’ve turned columns in our grid into x values in space, and rows in our grid into y values in space. In order to do this, we needed to account for the fact that (0,0) is at the center of our screen and that Unity positions cubes by putting the center of them at the point you say. That means that a cube at (0,0) will appear with its center at the center of the screen.
-
+>[info]
+>
+>To explain the positioning math a little, we’ve turned columns in our grid into x values in space, and rows in our grid into y values in space. In order to do this, we needed to account for the fact that (0,0) is at the center of our screen and that Unity positions cubes by putting the center of them at the point you say. That means that a cube at (0,0) will appear with its center at the center of the screen.
+>
 If we had said something like:
-
+>
 ```
 float x = col * (cellSideLength + margin);
 float y = row * (cellSideLength + margin);
 ```
-
-then our the cube at column 0, row 0 would have appeared in the center of our screen. (To make the math easier, we're making cellSideLength + margin equal 1)
-
+>
+>then our the cube at column 0, row 0 would have appeared in the center of our screen. (To make the math easier, we're making cellSideLength + margin equal 1)
+>
 ![](../media/grid_0.png)
-
-However, we want our *whole grid* to be centered. That means we want the cube at column 0, row 0 to be offset by half the grid’s width and half the grid's height.
-
+>
+>However, we want our *whole grid* to be centered. That means we want the cube at column 0, row 0 to be offset by half the grid’s width and half the grid's height.
+>
 ![](../media/grid_1.png)
-
+>
 We can do that by writing:
-
+>
 ```
 float x = (col - numCols * 0.5f) * (cellSideLength + margin);
 float y = (row - numRows * 0.5f) * (cellSideLength + margin);
 ```
-
+>
 which moves the center of our cube down and to the left.
-
+>
 ![](../media/grid_2.png)
-
+>
 However, this moves our cube too far, because it positions the center of the cube where the lower left-hand corner of our grid should be. Really, we want the lower left-hand corner of the cube to be where the lower left-hand corner of our grid is.
-
+>
 ![](../media/grid_3.png)
-
+>
 To fix this, we want to move our cube up and to the right by half of whatever it’s height and width is, so we write:
-
+>
 ```
 float x = (col + 0.5f - numCols * 0.5f) * (cellSideLength + margin);
 float y = (row + 0.5f - numRows * 0.5f) * (cellSideLength + margin);
 ```
-
+>
 Note that these calculations have been done totally independently of how big the cube is!  This is good, because it means if we ever wanted to change the Cube's size, we'd just need to change cellSideLength to match the new size of the cube we make ;)
 
 The last part of this code you may be wondering about is "Cell." What is Cell?

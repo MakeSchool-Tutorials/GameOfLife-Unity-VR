@@ -3,7 +3,7 @@ title: To Life!
 slug: to-life
 ---
 
-Now that we have an arrangement of Cells, let’s make them alive or dead!
+Now that we have an arrangement of Cells, let’s make them alive or dead!  To do this, we'll need to keep track of all of our cells somehow.
 
 >[action]
 >Open up Grid again, and declare another private member variable:
@@ -12,92 +12,118 @@ Now that we have an arrangement of Cells, let’s make them alive or dead!
 >private Cell[,] cells;
 >```
 
-This is a special type of array in C\# called a multidimensional array.
-A cell in cells can then be accessed like cells\[col,row\] or by
-iterating using a foreach loop, both of which we’ll eventually use.
+This is a special type of array in C\# called a multidimensional array, and we'll use it to keep track of all the cells in our grid.
+
+An individual cell of our array can be accessed like:
+```
+Cell cell = cells\[col,row\];
+```
+or by iterating using a foreach loop.
+
+We can also set a cell in our array, once its initialized. To set the cell at column 19, row 22, for example, we would say:
+```
+cells[19,20] = cell;
+```
+where "cell" is an instance of cell.
+
+Before we can do anything useful with it though, we need to initialize it.  When we initialize it, we need to specify how big it's gonna be.  If we want cells to represent a grid of 30 columns and 50 rows, we could initialize it by saying:
+
+```
+cells = new Cell[30,50];
+```
 
 >[action]
->Add the following before the for loops in the Start method:
->
->```
->cells = new Cell[numCols,numRows];
->```
+>Initialize the variable "cells" at the beginning of the Start method:
 
-This line initializes our array of cells. You may be wondering why we
-didn’t do this inline like the rest of our member variable declarations.
-We couldn’t do this because we wanted to rely on numCols and numRows,
-which we cannot reference until we’re inside a method.
+<!-- -->
+
+>[solution]
+>
+>Your code should look like this:
+```
+cells = new Cell[numCols,numRows];
+```
+>
+>It's good practice to use the variables we set up here rather than hard-coding it so that we can keep our actual code quite general. Then if we wanted to, say, change how many rows were in our grid, all we'd need to do is change one variable in one place ;)
+>
+>By the way, in case you're wondering why we didn’t do this inline like the rest of our member variable declarations. We couldn’t do this because we wanted to rely on numCols and numRows, which we cannot reference until we’re inside a method.
+
+<!-- -->
 
 >[action]
->Add the following below the Cell instantiation inside the for loop in
-Start:
->
->```
->cells[col,row] = cell;
->```
->
->Then open Cell and add the following to the Update method:
->
->```
->float scaleFactor = isAlive ? 1 : 0.5f;
->transform.localScale = Vector3.one * scaleFactor;
->Color color = isAlive ? Color.green : Color.grey;
->Utilities.ChangeCellColor(this,color);
->```
->
->and add the following member variable to it:
->
->```
->private bool isAlive;
->```
+>Now populate cells with each cell.
 
-Since we’re never assigning this bool, it will always be false, because
+<!-- -->
+
+>[solution]
+>
+We did this by adding the following below the Cell instantiation inside the for loop in Start:
+>
+```
+cells[col,row] = cell;
+```
+
+Be sure your code still compiles! So far, you shouldn't see any visible changes when you run the Scene, but if you save your code and navigate to Unity, once the code compiles, the Console will show you any warnings and/or errors it caught.
+
+So that we *can* see something visual, we're going to make all our dead cells small and grey and all of our alive cells green and regular size.  To do this, we'll need some way to tell if a cell is alive or dead.
+
+>[action]
+>Open Cell and add a private bool named "isAlive" to it.
+
+>[solution]
+>
+>Your code should look like this:
+```
+private bool isAlive;
+```
+>Since we’re never assigning this bool, it will always be false, because
 C\# values default to 0 or null when initialized without assignment.
 
-Save the components and run the Scene. All your Cubes should appear
-smaller than before!
+<!-- -->
 
-![](../media/image56.png)
-
-How have we done this? Well, our multidimensional array stores a Cell
-for each spot in our grid. Each cell has an isAlive flag, which is set
-to false by default.
-
-In our Update method, we’re looking at each Cell in our array of Cells
-and setting the size of the Cell (transform.localScale)l based on
-whether or not that cell is alive. The property transform.localScale is
-a Vector, with one component for each of the 3 spatial dimensions the
-Game Object occupies. We haven’t initialized a new Vector in this case,
-but instead multiplied a constant Vector of length (1,1,1) -- Vector.one
--- by a scalar to get a vector with each component scaled up.
-
-The line:
-
+>[action]
+>Now in the Update method, add code to makes this cell green and regular sized if it's alive or grey and small if it's dead.  As a hint, you can set the size of a cell to be size 5 by saying:
 ```
-float scaleFactor = isAlive ? 1.0f : 0.5f;
+transform.localScale = Vector3.one * 5;
 ```
+> and we've written a Utility function you should use to set the color:
+```
+Utilities.ChangeCellColor(this,color)
+```
+>where color is of type Color. Color.green is a green color, and Color.grey is a grey color.
 
-is what’s known as “syntactic sugar,” or a prettier version of, the
+>[solution]
+>
+>Our code looks like this:
+>
+```
+float scaleFactor = isAlive ? 1 : 0.5f;
+transform.localScale = Vector3.one * scaleFactor;
+Color color = isAlive ? Color.green : Color.grey;
+Utilities.ChangeCellColor(this,color);
+```
+>
+>If the '?' notation is new to you, this is what’s known as “syntactic sugar,” or a prettier version of, the
 following:
-
+>
 ```
 float scaleFactor;
-
+>
 if (cell.isAlive) {
   scaleFactor = 1;
 } else {
   scaleFactor = 0.5f;
 }
 ```
-
-Neither is any more correct than the other, one is just more concise;
+>
+>Neither is any more correct than the other, one is just more concise;
 however, if you prefer the longer version because it is more clear, by
 all means **USE IT!** Code is meant to be readable!
 
-You may also have noticed the “this” used in our Utility function used
-to set the color. This is because the Utility function requires a
-parameter of type Cell. “this” is the word C\# uses within a class to
-refer to the instance itself.
+Save the components and run the Scene. All your Cubes should appear
+smaller than before!
+
+![](../media/image56.png)
 
 But how can we be sure our code isn’t just shrinking all of our Cells
 unconditionally? Let’s add some test code.
