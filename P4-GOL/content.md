@@ -3,70 +3,79 @@ title: Evolution Revolution
 slug: evolution
 ---
 
-Now that we’re convinced our grid appropriately displays Cells as small
-or big to show whether or not they’re dead or alive, let’s add the logic
-that will make our population of cells evolve!
+Now that we’re convinced our grid appropriately displays Cells as small or big to show whether or not they’re dead or alive, let’s add the logic that will make our population of cells evolve!
 
-First, we’ll need to set an evolution speed. We won’t hook it up to our
-UI just yet; we want it to work first, then be interactive, so we’ll
-pick a default value.
+First, we’ll need to set an evolution speed. We won’t hook it up to our UI just yet; we want it to work first, then be interactive, so we’ll pick a default value for now.
 
 >[action]
->Add the following member variables to Grid:
+>Add two private variables to Grid, one named "evolutionPeriod," and one named "evolutionTimer."  Set evolutionPeriod to 0.5 and make them both floats.
+
+Be sure to make sure you don't have any errors in the Console!
+
+>[solution]
 >
->```
->private float evolutionPeriod = 0.5f;
->private float evolutionTimer;
->```
->
+>Your code should look like this:
+```
+private float evolutionPeriod = 0.5f;
+private float evolutionTimer;
+```
+
+<!-- -->
+
 >Then add the following to the Update method:
 >
->```
-> evolutionTimer -= Time.deltaTime;
-> if (evolutionTimer < 0) {
-> evolutionTimer = evolutionPeriod;
-> Debug.Log("Tick");
-> }
->```
+```
+evolutionTimer -= Time.deltaTime;
+if (evolutionTimer < 0) {
+  evolutionTimer = evolutionPeriod;
+  Debug.Log("Tick");
+}
+```
 
-Save the components, run the Scene, and look in the Console. You should
-see “Tick” logged every half-second.
+Save the components, run the Scene, and look in the Console. You should see “Tick” logged every half-second.
 
 ![](../media/image55.png)
 
-What we’ve done here is create a very simple timer. The variable
-evolutionTimer starts out at 0, and every frame, we subtract from it the
-amount of time that passed between this frame and the previous one
-(Time.deltaTime).
+What we’ve done here is create a very simple timer. The variable evolutionTimer starts out at 0, and every frame, we subtract from it the amount of time that passed between this frame and the previous one (Time.deltaTime).
 
-Whenever evolutionTimer becomes negative, we bring it back up to the
-value of the period we want for our timer.
+Whenever evolutionTimer becomes negative, we bring it back up to the value of the period we want for our timer.
 
-Time.deltaTime, by the way, is not necessarily a constant; even if we’re
-running at, say, 60 frames-per-second, we have no guarantee that each
-frame will take exactly 1/60th of a second to process! If a frame takes,
-say, 10 seconds to process, our timer won’t give us 20 ticks, but that’s
-okay. The user will see at most the next tick, no matter how long a
-cycle takes.
+>[info]
+>Time.deltaTime, by the way, is not necessarily a constant; even if we’re running at, say, 60 frames-per-second, we have no guarantee that each frame will take exactly 1/60th of a second to process! If a frame takes, say, 10 seconds to process, our timer won’t give us 20 ticks, but that’s okay. The user will see at most the next tick, no matter how long a cycle takes.
 
-In order to update the grid, we’ll need to add the rules to the Game of
-Life where this “Tick” is being logged.
+In order to update the grid, we’ll need to add the rules to the Game of Life where this “Tick” is being logged.
 
-In order to ensure that the values of cells that have already been
-calculated don’t affect cells that haven’t yet been calculated, we’re
-going to make our Cells evolve in two steps.
+In order to ensure that the values of cells that have already been calculated don’t affect cells that haven’t yet been calculated, we’re going to make our Cells evolve in two steps.
 
-First, we’re going to calculate the state that each cell should have on
-the next frame.
+First, we’re going to calculate the state that each cell should have on the next frame.
 
 Then, we’re going to assign each cell to have the correct state.
 
->[action]Create a two new member variables in Cell:
+This means we'll need to add a new public variable to Cell to track whether or not it'll be alive next.
+
+>[action]
+>Add a new public variable to Cell to track whether or not it'll be alive the next step.
+
+<!-- -->
+
+>[solution]
 >
->```
-> private bool isAliveNext;
-> private bool _isAlive;
->```
+>Our code looks like this:
+```
+private bool isAliveNext;
+```
+
+
+
+
+
+
+
+
+
+
+
+
 
 Note the underscore; this is just to prevent a name collision with
 isAlive.

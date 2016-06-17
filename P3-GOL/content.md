@@ -116,17 +116,13 @@ if (cell.isAlive) {
 }
 ```
 >
->Neither is any more correct than the other, one is just more concise;
-however, if you prefer the longer version because it is more clear, by
-all means **USE IT!** Code is meant to be readable!
+>Neither is any more correct than the other, one is just more concise; however, if you prefer the longer version because it is more clear, by all means **USE IT!** Code is meant to be readable!
 
-Save the components and run the Scene. All your Cubes should appear
-smaller than before!
+Save the components and run the Scene. All your Cubes should appear smaller than before!
 
 ![](../media/image56.png)
 
-But how can we be sure our code isn’t just shrinking all of our Cells
-unconditionally? Let’s add some test code.
+But how can we be sure our code isn’t just shrinking all of our Cells unconditionally? Let’s add some test code.
 
 >[action]
 >Change Cell’s isAlive method from private to public:
@@ -150,7 +146,6 @@ unconditionally? Let’s add some test code.
 >cells[5,0].isAlive = true;
 >```
 
-When you save and run this, you should see this totally arbitrary and
-entirely randomly-chosen pattern appear:
+When you save and run this, you should see this totally arbitrary and entirely randomly-chosen pattern appear:
 
 ![](../media/image53.png)
