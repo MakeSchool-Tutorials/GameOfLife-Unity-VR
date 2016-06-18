@@ -7,9 +7,7 @@ slug: all-the-dees
 
 All the Dees. All of them.
 
-Actually, making the game 3D isn’t terribly complicated. It just
-involves giving our cells one more dimension and changing our rules to
-work better, now that a Cell can be surrounded by 26 Cells instead of 8.
+What do we need to do to make our game 3D?  We just need to add a dimension, then maybe change our rules, because now a Cell could be surrounded by 26 Cells instead of 8.
 
 Let’s do it!
 
@@ -17,77 +15,225 @@ Let’s do it!
 >First, change the cells member variable to allow a third dimension by
 changing it to be:
 >
->```
->private Cell[,,] cells;
->```
+```
+private Cell[,,] cells;
+```
 
 It may look very similar to before; we’ve just added a comma.
 
 >[action]
 >Next, add the follow member variable:
 >
->```
-> private int numLays = 5;
->```
+```
+private int numLays = 5;
+```
 
 We’re using the term “layers” to refer to this new dimension we’re
 adding to our grid, hence “lay” for short.
 
 >[action]
->Add this information to the instantiation of our multidimensional array
-of cells by changing that line in the Start method to be:
+>Now go ahead and add that third dimension in there!  This can be tricky, so be sure you don't forget anything!
 >
->```
->cells = new Cell[numCols,numRows,numLays];
->```
+>As a hint for setting the position in the Start method, by the way, you can say:
+>
+```
+cell.transform.localPosition = new Vector3(x,y,z);
+```
+>
+>once you find z, because localPoisition is *really* a Vector3. When we assigned from
+a Vector2, Unity was smart and just filled in a 0 for that 3rd
+parameter.
 
 <!-- -->
 
->[action]
->Nest a third for loop anywhere you have two and rename the variables as
-appropriate. For example, in Start, you’d add:
+>[solution]
 >
->```
-> for (int lay = 0; lay < numLays; ++lay) {
->```
+>Our Grid class looks like this:
 >
->under:
+```
+using UnityEngine;
+using System.Collections;
 >
->```
-> for (int row = 0; row < numRows; ++row) {
->```
+public class Grid : MonoBehaviour {
+>
+	private int generationCount;
+>
+	private float evolutionPeriodMax = 1.5f;
+	private float evolutionPeriodMin = 0.25f;
+>
+	private bool isPlaying;
+>
+	private int numCols = 8;
+	private int numRows = 5;
+	private int numLays = 4;
+>
+	private float cellSideLength = 1;
+	private float margin = 0.5f;
+>
+	private Cell[,,] cells;
+>
+	private float evolutionPeriod = 0.5f;
+	private float evolutionTimer;
+>
+	// Use this for initialization
+	void Start () {
+>
+		cells = new Cell[numCols,numRows,numLays];
+>
+		for (int col = 0; col < numCols; ++col) {
+			for (int row = 0; row < numRows; ++row) {
+				for (int lay = 0; lay < numLays; ++lay) {
+>
+					Cell cell = Utilities.GetNewCell();
+					float x = (col + 0.5f - numCols * 0.5f) * (cellSideLength + margin);
+					float y = (row + 0.5f - numRows * 0.5f) * (cellSideLength + margin);
+					float z = (lay + 0.5f - numLays * 0.5f) * (cellSideLength + margin);
+					cell.transform.localPosition = new Vector3(x,y,z);
+>
+					cells[col,row,lay] = cell;
+				}
+			}
+		}
+>
+	}
+>
+	// Update is called once per frame
+	void Update () {
+>
+		evolutionTimer -= Time.deltaTime;
+		if (evolutionTimer < 0) {
+>
+			evolutionTimer = evolutionPeriod;
+>
+			Evolve();
+		}
+	}
+>
+	private void Evolve() {
+>
+		foreach (Cell cell in cells) {
+			cell.UpdateIsAlive();
+		}
+>
+		if (isPlaying) {
+>
+			++generationCount;
+>
+			for (int col = 0; col < cells.GetLength(0); ++col) {
+				for (int row = 0; row < cells.GetLength(1); ++row) {
+					for (int lay = 0; lay < cells.GetLength(2); ++lay) {
+>
+						int numAliveNeighbors = GetNumAliveNeighbors(col,row,lay);
+>
+						Cell cell = cells[col,row,lay];
+>
+            if (cell.isAlive) {
+>
+              if (numAliveNeighbors < 2 || numAliveNeighbors > 3) {
+      			    cell.isAlive = false;
+              } else {
+                cell.isAlive = true;
+              }
+>
+            } else if (!cell.isAlive && numAliveNeighbors == 3) {
+              cell.isAlive = true;
+            }
+					}
+>
+				}
+			}
+		}
+>
+	}
+>
+	private int GetNumAliveNeighbors(int colCenter, int rowCenter, int layCenter) {
+>
+		int numAliveNeighbors = 0;
+>
+		for (int dCol = -1; dCol <= 1; ++dCol) {
+			for (int dRow = -1; dRow <= 1; ++dRow) {
+				for (int dLay = -1; dLay <= 1; ++dLay) {
+>
+					if (dCol == 0 && dRow == 0 && dLay == 0) {continue;}
+>
+					int col = colCenter + dCol;
+					int row = rowCenter + dRow;
+					int lay = layCenter +dLay;
+>
+					if (col < 0) {col = cells.GetLength(0) - 1;}
+					if (col >= cells.GetLength(0)) {col = 0;}
+>
+					if (row < 0) {row = cells.GetLength(1) - 1;}
+					if (row >= cells.GetLength(1)) {row = 0;}
+>
+					if (lay < 0) {lay = cells.GetLength(2) - 1;}
+					if (lay >= cells.GetLength(2)) {lay = 0;}
+>
+					if (cells[col,row,lay].isAlive) {
+						++numAliveNeighbors;
+					}
+				}
+>
+			}
+		}
+>
+		return numAliveNeighbors;
+	}
+>
+	private void ResetEvolutionTimer() {
+		evolutionTimer = 0;
+	}
+>
+	public void PlayOrPause() {
+>
+		ResetEvolutionTimer();
+>
+		isPlaying = !isPlaying;
+	}
+>
+	public void Clear() {
+>
+		ResetEvolutionTimer();
+		generationCount = 0;
+>
+		foreach (Cell cell in cells) {
+			cell.isAliveNext = false;
+		}
+	}
+>
+	public void Randomize() {
+>
+		ResetEvolutionTimer();
+		generationCount = 0;
+>
+		foreach (Cell cell in cells) {
+			cell.isAliveNext = Random.value < 0.5f;
+		}
+	}
+>
+	public int GetPopulationCount() {
+>
+		int populationCount = 0;
+>
+		foreach (Cell cell in cells) {
+			if (cell.isAlive) {
+				++populationCount;
+			}
+		}
+>
+		return populationCount;
+	}
+>
+	public int GetGenerationCount() {
+		return generationCount;
+	}
+>
+	public void SetEvolutionPeriod(float sliderValue) {
+		evolutionPeriod = Mathf.Lerp(evolutionPeriodMin,evolutionPeriodMax,1.0f - sliderValue);
+	}
+}
 
-Be sure to close each new for loop you add with a closing curly brace!
-
-Anywhere you get a Cell using cells\[col,row\], change that to use your
-third parameter. For example, in Start, that would change to
-“cells\[col,row,lay\]”
-
-Be sure that GetNumAliveNeighbors gets a third parameter added, that its
-first continue conditional include information about the third
-dimension, and that the third dimension is adjusted like the rest!
-
-Either get rid of the code in Start that we were using to set an initial
-condition, or else add an extra parameter to it.
-
->[action]
->Finally, change the positioning code that sets where the Cells are, in
-the Start method to:
->
->```
-> float x = (col + 0.5f - numCols * 0.5f) * (cellSideLength + margin);
->
-> float y = (row + 0.5f - numRows * 0.5f) * (cellSideLength + margin);
->
-> float z = (lay + 0.5f - numLays * 0.5f) * (cellSideLength + margin);
->
-> cell.transform.localPosition = new Vector3(x,y,z);
->```
-
-Note that we’ve changed from a Vector2 to a Vector3. This is actually
-okay because localPoisition is *really* a Vector3. When we assigned from
-a Vector2, Unity was smart and just filled in a 0 for that 3rd
-parameter.
+```
 
 All right. You’ve made a lot of changes. Take a deep breath.
 

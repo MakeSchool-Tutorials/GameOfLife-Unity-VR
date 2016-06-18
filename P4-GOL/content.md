@@ -15,6 +15,7 @@ Be sure to make sure you don't have any errors in the Console!
 >[solution]
 >
 >Your code should look like this:
+>
 ```
 private float evolutionPeriod = 0.5f;
 private float evolutionTimer;
@@ -61,131 +62,147 @@ This means we'll need to add a new public variable to Cell to track whether or n
 >[solution]
 >
 >Our code looks like this:
+>
 ```
 private bool isAliveNext;
 ```
 
-
-
-
-
-
-
-
-
-
-
-
-
-Note the underscore; this is just to prevent a name collision with
-isAlive.
-
+<!-- -->
 >[action]
->Then change the member variable isAlive to look like the following:
->
->```
-> public bool isAlive {
->
-> set {
-> isAliveNext = value;
-> }
->
-> get {
-> return _isAlive;
-> }
->}
->```
+>Now create a method you can call to update the isAlive variable to be the value of the isAliveNext variable.
 
-This funny notation here is C\#’s getter/setter notation. The “get”
-value is returned when you attempt to retrieve the value of the property
-isAlive, and the “set” method is called when you assign a value (held in
-the variable named “value”) to isAlive.
+<!-- -->
 
->[action]
->Add the following method to Cell:
+>[solution]
 >
->```
-> public void UpdateIsAlive() {
-> 	_isAlive = isAliveNext;
-> }
+>Our code looks like this:
 >
 ```
+public void UpdateIsAlive() {
+  isAlive = isAliveNext;
+}
+```
+>
+>Be sure it's public! Otherwise, you won't be able to call it from Grid.
+
+To test UpdateIsAlive, let's put it into an Evolve method, which we can call every tick.
+
+>[action]
+>Create an Evolve method that you call every tick and that, for now, just calls UpdateIsAlive for each cell.
+
+<!-- -->
+
+>[solution]
+>
+>This section of our code now looks like this:
+>
+```
+void Update () {
+>
+	evolutionTimer -= Time.deltaTime;
+	if (evolutionTimer < 0) {
+>
+		evolutionTimer = evolutionPeriod;
+>
+		Evolve();
+>
+	}
+}
+>
+private void Evolve() {
+>
+  foreach (Cell cell in cells) {
+    cell.UpdateIsAlive();
+  }
+>
+}
+```
+>
+> We've chosen to use foreach rather than nesting for loops here because we don't need the rows or columns for any calculations in that step.
+
+When you run the Scene, you should now see all the cells disappear!
+
+![](../media/disappear.png)
+
+We expect that this will happen, because we never set isAliveNext to anything, so it's always false, so UpdateIsAlive always sets isAlive to be false.
+
+Now we just need to write some code to set the isAliveNext property for each cell.
+
+In order to do this, for each cell in our grid, we'll check the number of neighbors it has, and then check that number against the rules for the Game of Life: alive cells with 2 or 3 live neighbors live on, dead cells with 3 live neighbors come to life, and all other cells either stay or become dead.
+
+To help you, we're written a function that calculates the number of live neighbors a cell has:
+
+```
+private int GetNumAliveNeighbors(int colCenter, int rowCenter) {
+
+  int numAliveNeighbors = 0;
+
+  for (int dCol = -1; dCol <= 1; ++dCol) {
+    for (int dRow = -1; dRow <= 1; ++dRow) {
+
+      if (dCol == 0 && dRow == 0) {continue;}
+
+      int col = colCenter + dCol;
+      int row = rowCenter + dRow;
+
+      if (col < 0 || col >= cells.GetLength(0) ||
+      row < 0 || row >= cells.GetLength(1)) {continue;}
+
+      if (cells[col,row].isAlive) {
+        ++numAliveNeighbors;
+      }
+    }
+  }
+
+  return numAliveNeighbors;
+}
+```
+
+>[action]
+>Finish the Evolve function by writing code to set isAliveNext on each cell based on neighbor count.
+
+<!-- -->
+
+>[solution]
+>
+>Our Evolve method looks like this:
+>
+```
+private void Evolve() {
+>
+  for (int col = 0; col < cells.GetLength(0); ++col) {
+    for (int row = 0; row < cells.GetLength(1); ++row) {
+>
+      int numAliveNeighbors = GetNumAliveNeighbors(col,row);
+>
+      Cell cell = cells[col,row];
+>
+      if (cell.isAlive) {
+>
+        if (numAliveNeighbors < 2 || numAliveNeighbors > 3) {
+			    cell.isAlive = false;
+        } else {
+          cell.isAlive = true;
+        }
+>
+      } else if (!cell.isAlive && numAliveNeighbors == 3) {
+        cell.isAlive = true;
+      }
+    }
+  }
+>
+  foreach (Cell cell in cells) {
+    cell.UpdateIsAlive();
+  }
+}
+```
+>
+>Note that we *do* use nested for loops for the GetNumAliveNeigbors logic, because that method requires column and row numbers.
 
 <!-- -->
 
 >[action]
-> Now open Grid. Create a new method in Grid called Evolve:
->
->```
-> 	private void Evolve() {
->	}
->```
->
->And replace the Debug.Log(“Tick”) line with:
->
->```
-> Evolve();
->```
->inside Evolve, add the following code:
->
->```
->for (int col = 0; col < cells.GetLength(0); ++col) {
->for (int row = 0; row < cells.GetLength(1); ++row) {
->
->	int numAliveNeighbors = GetNumAliveNeighbors(col,row);
->
->	Cell cell = cells[col,row];
->
->	if (cell.isAlive) {
->
->		if (numAliveNeighbors < 2 || numAliveNeighbors > 3) {
->			cell.isAlive = false;
->		} else {
->			cell.isAlive = true;
->		}
->	} else if (!cell.isAlive && numAliveNeighbors == 3) {
->	cell.isAlive = true;
->		}
->	}
->}
->
->foreach (Cell cell in cells) {
->	cell.UpdateIsAlive();
->}
->```
-
-<!-- -->
-
->[action]
->Then create a new method in Grid called GetNumAliveNeigbors with the
-following definition:
->
->```
->private int GetNumAliveNeighbors(int colCenter, int rowCenter) {
->int numAliveNeighbors = 0;
->
->for (int dCol = -1; dCol <= 1; ++dCol) {
-> for (int dRow = -1; dRow <= 1; ++dRow) {
->
->if (dCol == 0 && dRow == 0) {continue;}
->
->int col = colCenter + dCol;
->int row = rowCenter + dRow;
->
->if (col < 0 || col >= cells.GetLength(0) ||
->row < 0 || row >= cells.GetLength(1)) {continue;}
->
->if (cells[col,row].isAlive) {
->++numAliveNeighbors;
->}
->}
->}
->
->return numAliveNeighbors;
->}
->```
-
-Save everything, then run the Scene!
+>Save everything, then run the Scene!
 
 ![](../media/image34.gif)
 
@@ -194,36 +211,49 @@ oscillator instead:
 
 ![](../media/image61.gif)
 
-Our GetNumAliveNeighbors method looks one row and one column around a
-given cell to see if the cell at that location is alive or not. If it
-is, it adds it to the count.
+You may have noticed that our GetNumAliveNeighbors method treats a cell in a corner as only surrounded by 3 cells, but a cell in the center as surrounded by 8. Our game would act differently though if we made cells along the edges wrap around.
 
-The lines:
-
-```
-if (col < 0 || col >= cells.GetLength(0) ||
-row < 0 || row >= cells.GetLength(1)) {
-continue;
-}
-```
-
-prevent the check from going out of bounds in the case that the Cell is
-at the edge of our grid (like (0,0), for example).
-
-But… why not wrap around instead? Then gliders could propagate forever!
+Then gliders could propagate forever! YAY!
 
 >[action]
->Replace those lines with the following:
->
->```
->if (col < 0) {col = cells.GetLength(0) - 1;}
->if (col >= cells.GetLength(0)) {col = 0;}
->
->if (row < 0) {row = cells.GetLength(1) - 1;}
->if (row >= cells.GetLength(1)) {row = 0;}
->```
+>Try making the GetNumAliveNeighbors code wrap around the board!
 
 ![](../media/image39.gif)
+
+>[solution]
+>
+>We changed our method to look like this:
+>
+```
+private int GetNumAliveNeighbors(int colCenter, int rowCenter) {
+>
+  int numAliveNeighbors = 0;
+>
+  for (int dCol = -1; dCol <= 1; ++dCol) {
+    for (int dRow = -1; dRow <= 1; ++dRow) {
+>
+      if (dCol == 0 && dRow == 0) {continue;}
+>
+      int col = colCenter + dCol;
+      int row = rowCenter + dRow;
+>
+      if (col < 0) {col = cells.GetLength(0) - 1;}
+      if (col >= cells.GetLength(0)) {col = 0;}
+>
+      if (row < 0) {row = cells.GetLength(1) - 1;}
+      if (row >= cells.GetLength(1)) {row = 0;}
+>
+      if (cells[col,row].isAlive) {
+        ++numAliveNeighbors;
+      }
+    }
+  }
+>
+  return numAliveNeighbors;
+}
+```
+>
+>We replaced the code that told our loops to continue with code that just changed the current row and/or col we we're inspecting to be the one that wraps around to the other end.
 
 If you want to test this with a glider, try the coordinates (2,3),
 (3,2), (4,2), (4,3), and (4,4):

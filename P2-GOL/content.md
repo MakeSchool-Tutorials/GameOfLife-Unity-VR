@@ -8,12 +8,12 @@ The first thing we’ll want to do is set up our grid.
 >[action]
 >Right above the declaration of the Start method, declare the following private member variables:
 >
->```
->private int numCols = 8;
->private int numRows = 5;
->private float cellSideLength = 1;
->private float margin = 0.5f;
->```
+```
+private int numCols = 8;
+private int numRows = 5;
+private float cellSideLength = 1;
+private float margin = 0.5f;
+```
 
 “numCols” and “numRows” will be used to define how wide and tall our grid is, respectively. “cellSideLength” represents how long each side of our cell will be. We’ll be using cubes as cells, which, in Unity have a side length of 1, so we’ve set this to 1. The variable “margin” will be used to give us a little breathing room between cells, so we can see everything better.
 
@@ -24,7 +24,7 @@ We’ve defined the values for these member variables inline, which is totally a
 >[action]
 >Next change the Start method to look like this:
 >
->```
+```
 void Start() {
 >
   for (int col = 0; col < numCols; ++col) {

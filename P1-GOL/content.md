@@ -7,10 +7,10 @@ slug: getting-set-up
 >
 >Open the Command Prompt application from your Start menu and type the following (input each line separately, and then hit "Enter" for each):
 >
->```
->cd Desktop
->git clone https://bitbucket.org/MakeSchool-Tutorials/gameoflife-unity.git
->```
+```
+cd Desktop
+git clone https://bitbucket.org/MakeSchool-Tutorials/gameoflife-unity.git
+```
 
 When you hit "Enter" some stuff should appear in the Command Prompt, and then a folder named "gameoflife-unity" should appear on your Desktop with a folder named "GOL" inside.
 

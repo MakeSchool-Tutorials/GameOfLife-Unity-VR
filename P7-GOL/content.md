@@ -7,27 +7,28 @@ Before the Game of Life runs reasonably, we’ll want to adjust the rules
 a little bit to be better suited for 3D.
 
 >[action]
->Add the following member variables to Grid:
->```
->public int minStayAlive = 6;
->public int maxStayAlive = 12;
->public int minRevive = 5;
->public int maxRevive = 8;
->```
+Add the following member variables to Grid:
+>
+```
+public int minStayAlive = 6;
+public int maxStayAlive = 12;
+public int minRevive = 5;
+public int maxRevive = 8;
+```
 >
 >Then modify the conditional that determines life to be:
 >
->```
-> if (cell.isAlive) {
->if (numAliveNeighbors < minStayAlive || numAliveNeighbors > maxStayAlive) {
->	cell.isAlive = false;
->} else {
->	cell.isAlive = true;
->}
->} else if (!cell.isAlive && numAliveNeighbors >= minStayAlive && numAliveNeighbors <= >maxStayAlive) {
->	cell.isAlive = true;
->}
->```
+```
+if (cell.isAlive) {
+  if (numAliveNeighbors < minStayAlive || numAliveNeighbors > maxStayAlive) {
+    cell.isAlive = false;
+  } else {
+    cell.isAlive = true;
+  }
+} else if (!cell.isAlive && numAliveNeighbors >= minStayAlive && numAliveNeighbors <= >maxStayAlive) {
+  cell.isAlive = true;
+}
+```
 
 Save and run!
 

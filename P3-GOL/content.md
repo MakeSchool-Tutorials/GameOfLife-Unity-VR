@@ -40,6 +40,7 @@ cells = new Cell[30,50];
 >[solution]
 >
 >Your code should look like this:
+>
 ```
 cells = new Cell[numCols,numRows];
 ```
@@ -70,9 +71,12 @@ So that we *can* see something visual, we're going to make all our dead cells sm
 >[action]
 >Open Cell and add a private bool named "isAlive" to it.
 
+<!-- -->
+
 >[solution]
 >
 >Your code should look like this:
+>
 ```
 private bool isAlive;
 ```
@@ -83,14 +87,18 @@ C\# values default to 0 or null when initialized without assignment.
 
 >[action]
 >Now in the Update method, add code to makes this cell green and regular sized if it's alive or grey and small if it's dead.  As a hint, you can set the size of a cell to be size 5 by saying:
+>
 ```
 transform.localScale = Vector3.one * 5;
 ```
 > and we've written a Utility function you should use to set the color:
+>
 ```
-Utilities.ChangeCellColor(this,color)
+Utilities.ChangeCellColor(this,color);
 ```
 >where color is of type Color. Color.green is a green color, and Color.grey is a grey color.
+
+<!-- -->
 
 >[solution]
 >
@@ -127,24 +135,24 @@ But how can we be sure our code isn’t just shrinking all of our Cells uncondit
 >[action]
 >Change Cell’s isAlive method from private to public:
 >
->```
->public bool isAlive;
->```
+```
+public bool isAlive;
+```
 >
->Then put the following at the bottom of the Start method of Grid:
+Then put the following at the bottom of the Start method of Grid:
 >
->```
->cells[2,3].isAlive = true;
->cells[2,4].isAlive = true;
->cells[5,3].isAlive = true;
->cells[5,4].isAlive = true;
->cells[1,1].isAlive = true;
->cells[6,1].isAlive = true;
->cells[2,0].isAlive = true;
->cells[3,0].isAlive = true;
->cells[4,0].isAlive = true;
->cells[5,0].isAlive = true;
->```
+```
+cells[2,3].isAlive = true;
+cells[2,4].isAlive = true;
+cells[5,3].isAlive = true;
+cells[5,4].isAlive = true;
+cells[1,1].isAlive = true;
+cells[6,1].isAlive = true;
+cells[2,0].isAlive = true;
+cells[3,0].isAlive = true;
+cells[4,0].isAlive = true;
+cells[5,0].isAlive = true;
+```
 
 When you save and run this, you should see this totally arbitrary and entirely randomly-chosen pattern appear:
 
