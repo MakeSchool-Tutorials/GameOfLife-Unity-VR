@@ -54,16 +54,16 @@ private void Evolve() {
 >
         Cell cell = cells[col,row];
 >
-        if (cell.isAlive) {
+        if (cell.IsAlive()) {
 >
           if (numAliveNeighbors < 2 || numAliveNeighbors > 3) {
-  			    cell.isAlive = false;
+  			    cell.isAliveNext = false;
           } else {
-            cell.isAlive = true;
+            cell.isAliveNext = true;
           }
 >
-        } else if (!cell.isAlive && numAliveNeighbors == 3) {
-          cell.isAlive = true;
+        } else if (!cell.IsAlive() && numAliveNeighbors == 3) {
+          cell.isAliveNext = true;
         }
       }
     }
@@ -88,7 +88,7 @@ Next we’ll implement Clear and Randomize.
 >
 ```
 foreach (Cell cell in cells) {
-   cell.isAlive = false;
+   cell.isAliveNext = false;
 }
 ```
 >
@@ -96,7 +96,7 @@ foreach (Cell cell in cells) {
 >
 ```
 foreach (Cell cell in cells) {
-  cell.isAlive = Random.value < 0.5f;
+  cell.isAliveNext = Random.value < 0.5f;
 }
 ```
 
@@ -155,16 +155,16 @@ private void Evolve() {
 >
         Cell cell = cells[col,row];
 >
-        if (cell.isAlive) {
+        if (cell.IsAlive()) {
 >
           if (numAliveNeighbors < 2 || numAliveNeighbors > 3) {
-  			    cell.isAlive = false;
+  			    cell.isAliveNext = false;
           } else {
-            cell.isAlive = true;
+            cell.isAliveNext = true;
           }
 >
-        } else if (!cell.isAlive && numAliveNeighbors == 3) {
-          cell.isAlive = true;
+        } else if (!cell.IsAlive() && numAliveNeighbors == 3) {
+          cell.isAliveNext = true;
         }
       }
     }
@@ -186,7 +186,7 @@ the value it currently has, which will be a value between 0 and 1 (0 on
 the far left, 1 on the far right).
 
 As speed increases, we want our period to decrease, and we’ll want our
-period to have a range that’s different than 0 to 1. What we’re going to
+period to have a range that’s different than 0 to 1. We’re going to
 assign our period to be some percentage of the way between a min and a
 max, using a process called *linear interpolation*.
 
@@ -242,7 +242,7 @@ return 0, but let’s put in some real code.
 ```
 int populationCount = 0;
 foreach (Cell cell in cells) {
-  if (cell.isAlive) {
+  if (cell.IsAlive()) {
     ++populationCount;
   }
 }

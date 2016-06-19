@@ -19,14 +19,14 @@ public int maxRevive = 8;
 >Then modify the conditional that determines life to be:
 >
 ```
-if (cell.isAlive) {
+if (cell.IsAlive()) {
   if (numAliveNeighbors < minStayAlive || numAliveNeighbors > maxStayAlive) {
-    cell.isAlive = false;
+    cell.isAliveNext = false;
   } else {
-    cell.isAlive = true;
+    cell.isAliveNext = true;
   }
-} else if (!cell.isAlive && numAliveNeighbors >= minStayAlive && numAliveNeighbors <= >maxStayAlive) {
-  cell.isAlive = true;
+} else if (!cell.IsAlive() && numAliveNeighbors >= minStayAlive && numAliveNeighbors <= maxStayAlive) {
+  cell.isAliveNext = true;
 }
 ```
 

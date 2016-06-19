@@ -102,8 +102,7 @@ Note that these calculations have been done totally independently of how big the
 The last part of this code you may be wondering about is "Cell." What is Cell?
 
 >[action]
->Navigate to and double-click MyComponents/Cell to open it in Visual
-Studio.
+>Navigate to and double-click MyComponents/Cell to open it in Visual Studio.
 
 ![](../media/image29.png)
 

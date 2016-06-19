@@ -127,16 +127,16 @@ public class Grid : MonoBehaviour {
 >
 						Cell cell = cells[col,row,lay];
 >
-            if (cell.isAlive) {
+            if (cell.IsAlive()) {
 >
               if (numAliveNeighbors < 2 || numAliveNeighbors > 3) {
-      			    cell.isAlive = false;
+      			    cell.isAliveNext = false;
               } else {
-                cell.isAlive = true;
+                cell.isAliveNext = true;
               }
 >
-            } else if (!cell.isAlive && numAliveNeighbors == 3) {
-              cell.isAlive = true;
+            } else if (!cell.IsAlive() && numAliveNeighbors == 3) {
+              cell.isAliveNext = true;
             }
 					}
 >
@@ -169,7 +169,7 @@ public class Grid : MonoBehaviour {
 					if (lay < 0) {lay = cells.GetLength(2) - 1;}
 					if (lay >= cells.GetLength(2)) {lay = 0;}
 >
-					if (cells[col,row,lay].isAlive) {
+					if (cells[col,row,lay].IsAlive()) {
 						++numAliveNeighbors;
 					}
 				}
@@ -216,7 +216,7 @@ public class Grid : MonoBehaviour {
 		int populationCount = 0;
 >
 		foreach (Cell cell in cells) {
-			if (cell.isAlive) {
+			if (cell.IsAlive()) {
 				++populationCount;
 			}
 		}

@@ -8,25 +8,29 @@ Now that we have an arrangement of Cells, let’s make them alive or dead!  To d
 >[action]
 >Open up Grid again, and declare another private member variable:
 >
->```
->private Cell[,] cells;
->```
+```
+private Cell[,] cells;
+```
 
 This is a special type of array in C\# called a multidimensional array, and we'll use it to keep track of all the cells in our grid.
 
-An individual cell of our array can be accessed like:
+An individual cell of our array can be accessed by indexing in. To get the cell at column 42, row 17, we could say:
+
 ```
-Cell cell = cells\[col,row\];
+Cell cell = cells[42,17];
 ```
+
 or by iterating using a foreach loop.
 
 We can also set a cell in our array, once its initialized. To set the cell at column 19, row 22, for example, we would say:
+
 ```
 cells[19,20] = cell;
 ```
-where "cell" is an instance of cell.
 
-Before we can do anything useful with it though, we need to initialize it.  When we initialize it, we need to specify how big it's gonna be.  If we want cells to represent a grid of 30 columns and 50 rows, we could initialize it by saying:
+where "cell" is an instance of Cell.
+
+Before we can do anything useful with cells though, we need to initialize it.  When we initialize it, we need to specify how big it's gonna be.  If we want cells to represent a grid of 30 columns and 50 rows, we could initialize it by saying:
 
 ```
 cells = new Cell[30,50];

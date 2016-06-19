@@ -64,7 +64,7 @@ This means we'll need to add a new public variable to Cell to track whether or n
 >Our code looks like this:
 >
 ```
-private bool isAliveNext;
+public bool isAliveNext;
 ```
 
 <!-- -->
@@ -126,6 +126,41 @@ When you run the Scene, you should now see all the cells disappear!
 
 We expect that this will happen, because we never set isAliveNext to anything, so it's always false, so UpdateIsAlive always sets isAlive to be false.
 
+>[action]
+>Before going on to the code to make our cells evolve, change the isAlive property to private:
+>
+```
+private bool isAlive;
+```
+>
+and create a method called IsAlive:
+>
+```
+public bool IsAlive() {
+  return isAlive;
+}
+```
+>
+>We only ever want to set whether or not a cell will be alive the next turn, never whether or not it is alive, but we still want to be able to get that information, so we've made the getter method IsAlive.
+
+<!-- -->
+
+>[action]
+>When you do this, you'll also want to change the spot in the code that sets test cells to be alive to set isAliveNext instead:
+>
+```
+cells[2,3].isAliveNext = true;
+cells[2,4].isAliveNext = true;
+cells[5,3].isAliveNext = true;
+cells[5,4].isAliveNext = true;
+cells[1,1].isAliveNext = true;
+cells[6,1].isAliveNext = true;
+cells[2,0].isAliveNext = true;
+cells[3,0].isAliveNext = true;
+cells[4,0].isAliveNext = true;
+cells[5,0].isAliveNext = true;
+```
+
 Now we just need to write some code to set the isAliveNext property for each cell.
 
 In order to do this, for each cell in our grid, we'll check the number of neighbors it has, and then check that number against the rules for the Game of Life: alive cells with 2 or 3 live neighbors live on, dead cells with 3 live neighbors come to life, and all other cells either stay or become dead.
@@ -148,7 +183,7 @@ private int GetNumAliveNeighbors(int colCenter, int rowCenter) {
       if (col < 0 || col >= cells.GetLength(0) ||
       row < 0 || row >= cells.GetLength(1)) {continue;}
 
-      if (cells[col,row].isAlive) {
+      if (cells[col,row].IsAlive()) {
         ++numAliveNeighbors;
       }
     }
@@ -177,16 +212,16 @@ private void Evolve() {
 >
       Cell cell = cells[col,row];
 >
-      if (cell.isAlive) {
+      if (cell.IsAlive()) {
 >
         if (numAliveNeighbors < 2 || numAliveNeighbors > 3) {
-			    cell.isAlive = false;
+			    cell.isAliveNext = false;
         } else {
-          cell.isAlive = true;
+          cell.isAliveNext = true;
         }
 >
-      } else if (!cell.isAlive && numAliveNeighbors == 3) {
-        cell.isAlive = true;
+      } else if (!cell.IsAlive() && numAliveNeighbors == 3) {
+        cell.isAliveNext = true;
       }
     }
   }
@@ -243,7 +278,7 @@ private int GetNumAliveNeighbors(int colCenter, int rowCenter) {
       if (row < 0) {row = cells.GetLength(1) - 1;}
       if (row >= cells.GetLength(1)) {row = 0;}
 >
-      if (cells[col,row].isAlive) {
+      if (cells[col,row].IsAlive()) {
         ++numAliveNeighbors;
       }
     }

@@ -1,4 +1,4 @@
-‰---
+---
 title: "What's the Game of Life?"
 slug: whats-the-game-of-life
 ---

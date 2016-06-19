@@ -70,8 +70,7 @@ private void Update() {
 }
 ```
 
-By the way, for the majority of this tutorial, we recommend selecting the Console tab at the bottom of the screen to hide the Project Panel and show the Console, or dragging the Console tab to the bottom of your screen so that both are visible. The Console is where Unity displays errors and warnings, and it’s a lot easier to catch them if they’re
-immediately visible.
+By the way, for the majority of this tutorial, we recommend selecting the Console tab at the bottom of the screen to hide the Project Panel and show the Console, or dragging the Console tab to the bottom of your screen so that both are visible. The Console is where Unity displays errors and warnings, and it’s a lot easier to catch them if they’re immediately visible.
 
 ![](../media/image37.png)
 
