@@ -7,7 +7,7 @@ Now that our Game of Life runs, let’s add the UI.
 
 We’ll start with the buttons along the bottom.
 
-![](../media/image19.png)
+![Buttons](../media/image19.png)
 
 We’ve hooked up these buttons to call some of the public methods we’ve defined in Grid. Those are:
 
@@ -17,7 +17,7 @@ We’ve hooked up these buttons to call some of the public methods we’ve defin
 
 If you’d like to verify that they’re hooked up as expected, feel free to add a unique Debug.Log statement to each one and test them out.
 
-![](../media/image58.png)
+![Logs](../media/image58.png)
 
 To give you an idea of what these buttons should eventually do: PlayOrPause should make our simulation play if it isn’t already, and pause it otherwise; Clear should clear out our grid;Randomize should fill our grid with a random population.
 
@@ -79,7 +79,7 @@ private void Evolve() {
 
 Save the components and run the Scene, and now the simulation should only run once you hit “Play.” The simulation should stop when you hit “Pause.”
 
-![](../media/image54.gif)
+![Pause](../media/image54.gif)
 
 Next we’ll implement Clear and Randomize.
 
@@ -100,28 +100,16 @@ foreach (Cell cell in cells) {
 }
 ```
 
-The Random function is a UnityEngine function. C\# also has a built in
-function System.Random that’s a little different. The reason we’re not
-getting a collision between UnityEngine.Random and System.Random is
-because of what namespace, or set of names, we’re using. The “using”
-statements at the top tell us what namespaces to use. If we were to add
-“using System” at the top, then we’d need to specify UnityEngine.Random
+The Random function is a UnityEngine function. C\# also has a built in function System.Random that’s a little different. The reason we’re not getting a collision between UnityEngine.Random and System.Random is because of what namespace, or set of names, we’re using. The “using” statements at the top tell us what namespaces to use. If we were to add “using System” at the top, then we’d need to specify UnityEngine.Random
 or System.Random as the case may be.
 
 Save components and Run the Scene!
 
-![](../media/image38.gif)
+![Randomize](../media/image38.gif)
 
-Hmmm… Something wonky’s going on… First of all, when you press the
-“Clear” and “Randomize” buttons, sometimes they don’t happen
-immediately. Also, what happened when we pressed the “Play” button?? Is
-our game broken???
+Hmmm… Something wonky’s going on… First of all, when you press the “Clear” and “Randomize” buttons, sometimes they don’t happen immediately. Also, what happened when we pressed the “Play” button?? Is our game broken???
 
-There are two issues here. One is that we’re not resetting our timer
-when we press our buttons, and we should be. The second is that our
-Clear and Randomize methods are setting what values the Cells should
-have on the next step, but that’s being overwritten by our Evolve
-method.
+There are two issues here. One is that we’re not resetting our timer when we press our buttons, and we should be. The second is that our Clear and Randomize methods are setting what values the Cells should have on the next step, but that’s being overwritten by our Evolve method.
 
 >[action]
 >To fix the first problem, Create the following method:
@@ -137,8 +125,7 @@ private void ResetEvolutionTimer() {
 <!-- -->
 
 >[action]
->To fix the second problem, switch the order of for loops in the Evolve
-method so that it looks like this:
+>To fix the second problem, switch the order of for loops in the Evolve method so that it looks like this:
 >
 ```
 private void Evolve() {
@@ -172,27 +159,19 @@ private void Evolve() {
 }
 ```
 
-Save the components and run the Scene, and you should have a pretty
-happy Game of Life!
+Save the components and run the Scene, and you should have a pretty happy Game of Life!
 
-![](../media/image26.gif)
+![It's ALIVE](../media/image26.gif)
 
 Next, we’ll add the speed slider.
 
-![](../media/image21.png)
+![Evolution Speed slider](../media/image21.png)
 
-The speed slider calls the Grid method SetEvolutionPeriod, and passes in
-the value it currently has, which will be a value between 0 and 1 (0 on
-the far left, 1 on the far right).
+The speed slider calls the Grid method SetEvolutionPeriod, and passes in the value it currently has, which will be a value between 0 and 1 (0 on the far left, 1 on the far right).
 
-As speed increases, we want our period to decrease, and we’ll want our
-period to have a range that’s different than 0 to 1. We’re going to
-assign our period to be some percentage of the way between a min and a
-max, using a process called *linear interpolation*.
+As speed increases, we want our period to decrease, and we’ll want our period to have a range that’s different than 0 to 1. We’re going to assign our period to be some percentage of the way between a min and a max, using a process called *linear interpolation*.
 
-Don’t worry if that term sounds obtuse and complicated! We’re going to
-use a function to take care of this for us -- and you’ll see this
-function in a later tutorial too ;)
+Don’t worry if that term sounds obtuse and complicated! We’re going to use a function to take care of this for us -- and you’ll see this function in a later tutorial too ;)
 
 To start, lets set our min and max values.
 
@@ -210,24 +189,16 @@ private float evolutionPeriodMin = 0.25f;
 evolutionPeriod = Mathf.Lerp(evolutionPeriodMin,evolutionPeriodMax,1.0f - sliderValue);
 ```
 
-The function Mathf.Lerp returns a value that’s some percentage of the
-way between the min and max its given. The percentage of the way we’re
-asking it to use is 1 - sliderValue, because sliderValue *increases* as
-the slider moves left-to-right from 0 to 1, and we want our our slider
-to *decrease* as it moves left-to-right from 0 to 1.
+The function Mathf.Lerp returns a value that’s some percentage of the way between the min and max its given. The percentage of the way we’re asking it to use is 1 - sliderValue, because sliderValue *increases* as the slider moves left-to-right from 0 to 1, and we want our our slider to *decrease* as it moves left-to-right from 0 to 1.
 
 Save the components and run the Scene!
 
-![](../media/image33.gif)
+![Speed up, slow down](../media/image33.gif)
 
-The final bits of HUD we’d like activate are the counters up top. The
-population counter should tell us how many Cells are alive at any given
-time, and Generation should tell us how many times the system has
+The final bits of HUD we’d like activate are the counters up top. The population counter should tell us how many Cells are alive at any given time, and Generation should tell us how many times the system has
 evolved.
 
-These labels determine their text by getting values from
-GetPopulationCount and GetGenerationCount respectively. Right now they
-return 0, but let’s put in some real code.
+These labels determine their text by getting values from GetPopulationCount and GetGenerationCount respectively. Right now they return 0, but let’s put in some real code.
 
 >[action]
 >
@@ -250,11 +221,9 @@ foreach (Cell cell in cells) {
 return populationCount;
 ```
 
-Save the component and run the Scene. The population number should match
-the population you see on the screen. It may help to keep the simulation
-paused and hit the random button over and over to check.
+Save the component and run the Scene. The population number should match the population you see on the screen. It may help to keep the simulation paused and hit the random button over and over to check.
 
-![](../media/image24.png)
+![Population counter](../media/image24.png)
 
 >[action]
 >Now implement the function that returns the current generation count, that is, the number of evolution steps that have passed since the last Clear or Randomize.
@@ -291,7 +260,7 @@ return generationCount;
 
 Save the component and run the Scene!
 
-![](../media/image57.gif)
+![PARTAY](../media/image57.gif)
 
 Congratulations! You now have a fully functional Game of Life!
 

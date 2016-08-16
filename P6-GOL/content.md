@@ -28,8 +28,7 @@ It may look very similar to before; we’ve just added a comma.
 private int numLays = 5;
 ```
 
-We’re using the term “layers” to refer to this new dimension we’re
-adding to our grid, hence “lay” for short.
+We’re using the term “layers” to refer to this new dimension we’re adding to our grid, hence “lay” for short.
 
 >[action]
 >Now go ahead and add that third dimension in there!  This can be tricky, so be sure you don't forget anything!
@@ -40,9 +39,7 @@ adding to our grid, hence “lay” for short.
 cell.transform.localPosition = new Vector3(x,y,z);
 ```
 >
->once you find z, because localPoisition is *really* a Vector3. When we assigned from
-a Vector2, Unity was smart and just filled in a 0 for that 3rd
-parameter.
+>once you find z, because localPoisition is *really* a Vector3. When we assigned from a Vector2, Unity was smart and just filled in a 0 for that 3rd parameter.
 
 <!-- -->
 
@@ -232,14 +229,14 @@ public class Grid : MonoBehaviour {
 		evolutionPeriod = Mathf.Lerp(evolutionPeriodMin,evolutionPeriodMax,1.0f - sliderValue);
 	}
 }
-
+>
 ```
 
 All right. You’ve made a lot of changes. Take a deep breath.
 
 Save the component, run the Scene, and hit Randomize.
 
-![](../media/image52.png)
+![3D](../media/image52.png)
 
 Did you get an error when you tried to run the Scene? If so,
 double-click the error in the Console and it should take you to the spot

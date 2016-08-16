@@ -104,6 +104,8 @@ Utilities.ChangeCellColor(this,color);
 
 <!-- -->
 
+<!-- n.b. the Utilities.ChangeCellColor function is written in a rather hacky way that may cause performance issues; not a huge issue, but it should be changed -->
+
 >[solution]
 >
 >Our code looks like this:
@@ -132,7 +134,7 @@ if (cell.isAlive) {
 
 Save the components and run the Scene. All your Cubes should appear smaller than before!
 
-![](../media/image56.png)
+![The Cubes are smaller than before](../media/image56.png)
 
 But how can we be sure our code isn’t just shrinking all of our Cells unconditionally? Let’s add some test code.
 
@@ -160,4 +162,4 @@ cells[5,0].isAlive = true;
 
 When you save and run this, you should see this totally arbitrary and entirely randomly-chosen pattern appear:
 
-![](../media/image53.png)
+![Smiley McSmileFace](../media/image53.png)

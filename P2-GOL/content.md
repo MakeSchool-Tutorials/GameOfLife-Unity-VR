@@ -47,9 +47,9 @@ Save the component, and go back to Unity.
 >Press the Play arrow at the **top** (not the one in the Scene itself!) to run the Scene. You should see a
 grid of cubes appear!
 
-![](../media/image27.png)
+![Play arrow at the top](../media/image27.png)
 
-![](../media/image28.png)
+![The running Scene](../media/image28.png)
 
 >[action]
 >Press the Play button up top again to stop running the Scene.
@@ -69,11 +69,11 @@ float y = row * (cellSideLength + margin);
 >
 >then our the cube at column 0, row 0 would have appeared in the center of our screen. (To make the math easier, we're making cellSideLength + margin equal 1)
 >
-![](../media/grid_0.png)
+![Centered Cube](../media/grid_0.png)
 >
 >However, we want our *whole grid* to be centered. That means we want the cube at column 0, row 0 to be offset by half the grid’s width and half the grid's height.
 >
-![](../media/grid_1.png)
+![Where we want the Cube](../media/grid_1.png)
 >
 We can do that by writing:
 >
@@ -84,11 +84,11 @@ float y = (row - numRows * 0.5f) * (cellSideLength + margin);
 >
 which moves the center of our cube down and to the left.
 >
-![](../media/grid_2.png)
+![The Cube has moved bottom-left](../media/grid_2.png)
 >
 However, this moves our cube too far, because it positions the center of the cube where the lower left-hand corner of our grid should be. Really, we want the lower left-hand corner of the cube to be where the lower left-hand corner of our grid is.
 >
-![](../media/grid_3.png)
+![The Cube should be offset differently](../media/grid_3.png)
 >
 To fix this, we want to move our cube up and to the right by half of whatever it’s height and width is, so we write:
 >
@@ -104,11 +104,11 @@ The last part of this code you may be wondering about is "Cell." What is Cell?
 >[action]
 >Navigate to and double-click MyComponents/Cell to open it in Visual Studio.
 
-![](../media/image29.png)
+![The Cell file](../media/image29.png)
 
 When you do, you should see some code similar to Grid.
 
-![](../media/image04.png)
+![The code in the Cell class](../media/image04.png)
 
 In Grid, we set Cell’s position by setting cell.transform.localPosition. “transform” is a public property that Cell has inherited from MonoBehaviour, and localPosition is a property of that.
 

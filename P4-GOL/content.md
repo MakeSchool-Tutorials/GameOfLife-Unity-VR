@@ -35,7 +35,7 @@ if (evolutionTimer < 0) {
 
 Save the components, run the Scene, and look in the Console. You should see “Tick” logged every half-second.
 
-![](../media/image55.png)
+![Ticks log](../media/image55.png)
 
 What we’ve done here is create a very simple timer. The variable evolutionTimer starts out at 0, and every frame, we subtract from it the amount of time that passed between this frame and the previous one (Time.deltaTime).
 
@@ -122,7 +122,7 @@ private void Evolve() {
 
 When you run the Scene, you should now see all the cells disappear!
 
-![](../media/disappear.png)
+![Disappear](../media/disappear.png)
 
 We expect that this will happen, because we never set isAliveNext to anything, so it's always false, so UpdateIsAlive always sets isAlive to be false.
 
@@ -239,12 +239,12 @@ private void Evolve() {
 >[action]
 >Save everything, then run the Scene!
 
-![](../media/image34.gif)
+![Evolving Smiley](../media/image34.gif)
 
 For an easier-to-recognize pattern, you could also use a simple 3-pixel
 oscillator instead:
 
-![](../media/image61.gif)
+![Oscillator](../media/image61.gif)
 
 You may have noticed that our GetNumAliveNeighbors method treats a cell in a corner as only surrounded by 3 cells, but a cell in the center as surrounded by 8. Our game would act differently though if we made cells along the edges wrap around.
 
@@ -253,7 +253,7 @@ Then gliders could propagate forever! YAY!
 >[action]
 >Try making the GetNumAliveNeighbors code wrap around the board!
 
-![](../media/image39.gif)
+![Pacman Smiley evolving](../media/image39.gif)
 
 >[solution]
 >
@@ -293,4 +293,4 @@ private int GetNumAliveNeighbors(int colCenter, int rowCenter) {
 If you want to test this with a glider, try the coordinates (2,3),
 (3,2), (4,2), (4,3), and (4,4):
 
-![](../media/image63.gif)
+![Glider!](../media/image63.gif)
