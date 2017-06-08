@@ -193,4 +193,4 @@ When you save and run this, you should see this totally arbitrary and entirely r
 
 > [action]
 >
-Go ahead an remove the code you just added and change `isAlive` back to private.
+Go ahead an remove the smiley code you just added.
