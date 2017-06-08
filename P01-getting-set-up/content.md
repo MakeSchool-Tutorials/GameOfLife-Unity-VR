@@ -16,7 +16,7 @@ git clone https://bitbucket.org/MakeSchool-Tutorials/gameoflife-unity.git
 >
 When you hit `Enter` some outputs should appear in the Command Prompt, and then a folder named `gameoflife-unity` should appear on your Desktop with a folder named `GOL` inside.
 >
-![GOL folder downloaded](../media/folders.PNG)
+![GOL folder downloaded](../media/folders.png)
 
 # Opening the project
 
@@ -26,9 +26,9 @@ Let's take a look at the starter project.
 >
 Open Unity, and open the project by choosing `Open` and then navigating to and selecting the folder `GOL`.
 >
-![Select "Open"](../media/open.PNG)
+![Select "Open"](../media/open.png)
 >
-![Select GOL folder](../media/open_2.PNG)
+![Select GOL folder](../media/open_2.png)
 >
 When the project opens, you should see a _HUD_ floating over a nebulous space.
 >
