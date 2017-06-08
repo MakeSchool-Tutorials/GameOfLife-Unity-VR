@@ -13,6 +13,8 @@ Add two private variables to `Grid`, one named `evolutionPeriod`, and one named 
 >
 Make sure you don't have any errors in the Console!
 
+<!-- -->
+
 > [solution]
 >
 Your code should look like this:
