@@ -190,3 +190,7 @@ cells[5,0].isAlive = true;
 When you save and run this, you should see this totally arbitrary and entirely randomly-chosen pattern appear:
 
 ![Smiley McSmileFace](../media/image53.png)
+
+> [action]
+>
+Go ahead an remove the code you just added and change `isAlive` back to private.
