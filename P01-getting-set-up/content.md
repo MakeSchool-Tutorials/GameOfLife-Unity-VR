@@ -11,7 +11,7 @@ Open the `Command Prompt` application from your Start menu and type the followin
 >
 ```
 cd Desktop
-git clone https://bitbucket.org/MakeSchool-Tutorials/gameoflife-unity.git
+git clone https://github.com/MakeSchool-Tutorials/Game-of-Life-Unity-Starter.git
 ```
 >
 When you hit `Enter` some outputs should appear in the Command Prompt, and then a folder named `gameoflife-unity` should appear on your Desktop with a folder named `GOL` inside.
